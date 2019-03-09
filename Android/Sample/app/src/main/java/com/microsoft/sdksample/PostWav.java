@@ -1,10 +1,11 @@
 package com.microsoft.sdksample;
 
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
@@ -12,12 +13,11 @@ interface PostWav {
 
 
 
-
-    //@Multipart
+    @Multipart
         @POST("v1?cid=48b1fa24-f21f-4b41-8c3f-be319d8b4b26")
-        Call<Response> send (@Header("Content-Type") String contentType,
-                             @Part("myFile") RequestBody audioFile,
-        @Header("Ocp-Apim-Subscription-Key") String lang);
+        Call<ResponseBody> send (@Header("Content-Type") String contentType,
+                                 @Part("myFile") RequestBody audioFile,
+                                 @Header("Ocp-Apim-Subscription-Key") String lang);
 
 
 
