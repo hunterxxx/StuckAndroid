@@ -42,6 +42,13 @@ import android.widget.Toast;
 import com.microsoft.speech.tts.Synthesizer;
 import com.microsoft.speech.tts.Voice;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+
 public class MainActivity extends ActionBarActivity {
     // Note: Sign up at http://www.projectoxford.ai for the client credentials.
     private Synthesizer m_syn;
@@ -50,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         if (getString(R.string.api_key).startsWith("Please")) {
             new AlertDialog.Builder(this)
@@ -76,8 +84,8 @@ public class MainActivity extends ActionBarActivity {
             m_syn.SpeakToAudio(getString(R.string.tts_text));
 
             // Use SSML for speech.
-            String text = "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:mstts=\"http://www.w3.org/2001/mstts\" xml:lang=\"en-US\"><voice xml:lang=\"en-US\" name=\"Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)\">You can also use SSML markup for text to speech.</voice></speak>";
-            m_syn.SpeakSSMLToAudio(text);
+           // String text = "<speak>This output speech uses SSML.</speak>";
+            //m_syn.SpeakSSMLToAudio(text);
 
             findViewById(R.id.stop_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +98,24 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     m_syn.SpeakToAudio(getString(R.string.tts_text));
+                }
+            });
+
+
+            File audioFile = new File("res/raw/forhan.wav");
+            final RequestBody requestAudioFile = RequestBody.create(MediaType.parse("application/octet-stream"), audioFile);
+
+            findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PostWav service = PostWav.retrofit.create(PostWav.class);
+                    Call<Response> call = service.send("audio/wav; samplerate=1600", requestAudioFile ,"6149675feef147f797f24802e78aafac");
+                   // call.enqueue(new Callback<Response>() {
+
+                    //}
+
+                    //TextView textView = (TextView) findViewById(R.id.textView);
+                    //textView.setText(result);
                 }
             });
         }

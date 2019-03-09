@@ -26,8 +26,10 @@ repositories {
 }
 
 dependencies {
-    releaseCompile(name: 'speechsdk', ext: 'aar')
-    debugCompile project(path: ':speechsdk')
+    releaseApi(name: 'speechsdk', ext: 'aar')
+    debugApi project(path: ':speechsdk')
 
-    compile 'com.android.support:appcompat-v7:22.1.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.android.support:appcompat-v7:22.1.0'
+
 }
